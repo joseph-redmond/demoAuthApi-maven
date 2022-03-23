@@ -1,6 +1,10 @@
-FROM openjdk:8-jdk-alpine
-MAINTAINER experto.com
-VOLUME /tmp
+FROM openjdk:14-jdk-alpine
+
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
+COPY target/*.jar home/spring/application.jar
+
 EXPOSE 8080
-ADD target/demoAuthApi-0.0.1-SNAPSHOT.jar demoAuthApi.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/demoAuthApi.jar"]
+
+ENTRYPOINT ["java", "-jar", "/home/spring/application.jar"]
